@@ -17,7 +17,6 @@
     <div class="jumbotron container-fluid mt-2 text-center p-2">
         <h1>Weather Dashboard</h1>
     </div>
-    
     <div class="container">
         <!-- City Search Row-->
         <div class="row">
@@ -25,7 +24,7 @@
                 <h4 class="pt-1">Search for a City:</h4>
                 <!-- Search City Form -->
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control"id="search-city" aria-label="City Search">
+                    <input type="text" class="form-control" id="search-city" aria-label="City Search">
                 </div>
                 <!-- Search City Button & List -->
                 <button class=" btn btn-primary" type="button" id="search-btn">Search</button>
@@ -38,10 +37,10 @@
             <div class="col-sm-8">
                 <div class="row ml-2 border border-dark">
                     <div class="col-sm-12" id="current-weather">
-                        <h3 class="city-name mb-1 mt-2 bolder"></h3>
-                        <p>Temp:<span class="current" id="ctemp"></span></p>
-                        <p>Wind:<span class="current" id="cwind"></span></p>
-                        <p>Humidity:<span class="current" id="chumidity"></span></p>
+                        <h3 class="city-name mb-1 mt-2 bolder" id="current-city"></h3>
+                        <p>Temp:<span class="current" id="current-temp"></span></p>
+                        <p>Wind:<span class="current" id="current-wind"></span></p>
+                        <p>Humidity:<span class="current" id="current-humidity"></span></p>
                         <p>UV Index:<span class="current bg-danger rounded py-2 px-2 text-white" id="uv-index"></span></p>
                     </div>
                 </div>
@@ -52,43 +51,43 @@
 
                     <div class="row text-light">
                         <div class="col-sm-2 bg-primary forecast text-white ml-2 mb-3 p-2 mt-2">
-                            <p id="fdate0"></p>
-                            <p id="fimg0"></p>
-                            <p>Temp:<span id="ftemp0"></span></p>
-                            <p>Wind:<span id="fwind0"></span></p>
-                            <p>Humidity:<span id="fhumidity0"></span></p>
+                            <p id="futdate0"></p>
+                            <p id="futimg0"></p>
+                            <p>Temp:<span id="futtemp0"></span></p>
+                            <p>Wind:<span id="futwind0"></span></p>
+                            <p>Humidity:<span id="futhumidity0"></span></p>
                         </div>
 
                         <div class="col-sm-2 bg-primary forecast text-white ml-2 mb-3 p-2 mt-2">
-                            <p id="fdate1"></p>
-                            <p id="fimg1"></p>
-                            <p>Temp:<span id="ftemp1"></span></p>
-                            <p>Wind:<span id="fwind1"></span></p>
-                            <p>Humidity:<span id="fhumidity1"></span></p>
+                            <p id="futdate1"></p>
+                            <p id="futimg1"></p>
+                            <p>Temp:<span id="futtemp1"></span></p>
+                            <p>Wind:<span id="futwind1"></span></p>
+                            <p>Humidity:<span id="futhumidity1"></span></p>
                         </div>
 
                         <div class="col-sm-2 bg-primary forecast text-white ml-2 mb-3 p-2 mt-2">
-                            <p id="fdate2"></p>
-                            <p id="fimg2"></p>
-                            <p>Temp:<span id="ftemp2"></span></p>
-                            <p>Wind:<span id="fwind2"></span></p>
-                            <p>Humidity:<span id="fhumidity2"></span></p>
+                            <p id="futdate2"></p>
+                            <p id="futimg2"></p>
+                            <p>Temp:<span id="futtemp2"></span></p>
+                            <p>Wind:<span id="futwind2"></span></p>
+                            <p>Humidity:<span id="futhumidity2"></span></p>
                         </div>
 
                         <div class="col-sm-2 bg-primary forecast text-white ml-2 mb-3 p-2 mt-2">
-                            <p id="fdate3"></p>
-                            <p id="fimg3"></p>
-                            <p>Temp:<span id="ftemp3"></span></p>
-                            <p>Wind:<span id="fwind3"></span></p>
-                            <p>Humidity:<span id="fhumidity3"></span></p>
+                            <p id="futdate3"></p>
+                            <p id="futimg3"></p>
+                            <p>Temp:<span id="futtemp3"></span></p>
+                            <p>Wind:<span id="futwind3"></span></p>
+                            <p>Humidity:<span id="futhumidity3"></span></p>
                         </div>
 
                         <div class="col-sm-2 bg-primary forecast text-white ml-2 mb-3 p-2 mt-2">
-                            <p id="fdate4"></p>
-                            <p id="fimg4"></p>
-                            <p>Temp:<span id="ftemp4"></span></p>
-                            <p>Wind:<span id="fwind4"></span></p>
-                            <p>Humidity:<span id="fhumidity4"></span></p>
+                            <p id="futdate4"></p>
+                            <p id="futimg4"></p>
+                            <p>Temp:<span id="futtemp4"></span></p>
+                            <p>Wind:<span id="futwind4"></span></p>
+                            <p>Humidity:<span id="futhumidity4"></span></p>
                         </div>
                     </div>
                 </div>
