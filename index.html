@@ -7,100 +7,62 @@
     <title>Weather Dashboard</title>
     <link rel="stylesheet" href="./assets/css/style.css">
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" />
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css">
     <!-- CSS -->
     <link rel="stylesheet" href="./assets/css/style.css">    
 </head>
 <body>
     <!-- Jumbotron -->
-    <div class="jumbotron container-fluid mt-2 text-center p-2">
+    <header>
         <h1>Weather Dashboard</h1>
-    </div>
+    </header>
     
-    <div class="container">
+    <section>
         <!-- City Search Row-->
         <div class="row">
-            <div class="col-sm-4 bg-light">
-                <h4 class="pt-1">Search for a City:</h4>
-                <!-- Search City Form -->
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" id="search-city" aria-label="City Search">
+            <div class="col-12 col-md-3">
+                <div class="card">
+                    <h3 class="card-header">Search for a City:</h3>
+
+                    <!-- Search City Form -->
+                    <form class="card-body" id="form">
+                        <label></label>
+                        <input name="city" id="city-input" type="text" class="form-control">
+
+                        <button type="submit" class="btn btn-block p-2" id="search-btn">Search</button>
+                    </form>
                 </div>
-                <!-- Search City Button & List -->
-                <button class=" btn btn-primary" type="button" id="search-btn">Search</button>
-                <ul class="list-group">
 
-                </ul>
-            </div>
+                <!-- Search History -->
+                <div class="card">
+                    <div class="card-body" id="search-history"></div>
+                </div>
 
-            <!-- Current Weather Conditions -->
-            <div class="col-sm-8">
-                <div class="row ml-2 border border-dark">
-                    <div class="col-sm-12" id="current-weather">
-                        <h3 class="city-name mb-1 mt-2 bolder" id="current-city"></h3>
-                        <p>Temp:<span class="current" id="current-temp"></span></p>
-                        <p>Wind:<span class="current" id="current-wind"></span></p>
-                        <p>Humidity:<span class="current" id="current-humidity"></span></p>
-                        <p>UV Index:<span class="current bg-danger rounded py-2 px-2 text-white" id="uv-index"></span></p>
+                <!-- Current Weather Conditions -->
+                <div class="col-12 col-md-8">
+                    <div class="card" id="current-city">
+                        <h3 class="card-header" id="city-name"></h3>
+                        <p id="date"></p>
+                        <p id="icon"></p>
+                        <p id="temperature"></p>
+                        <p id="wind"></p>
+                        <p id="humidity"></p>
+                        <p id="uv-index"></p>
                     </div>
-                </div>
 
-                <!-- Future Weather Conditions -->
-                <div class="col-sm-12" id="future-weather">
-                    <h3>5-Day Forecast:</h3>
+                    <!-- 5 Day Forecast -->
+                    <h3 id="forecast-title"></h3>
+                    <div id="weekly-forecast">
 
-                    <div class="row text-light">
-                        <div class="col-sm-2 bg-primary forecast text-white ml-2 mb-3 p-2 mt-2">
-                            <p id="futdate0"></p>
-                            <p id="futimg0"></p>
-                            <p>Temp:<span id="futtemp0"></span></p>
-                            <p>Wind:<span id="futwind0"></span></p>
-                            <p>Humidity:<span id="futhumidity0"></span></p>
-                        </div>
-
-                        <div class="col-sm-2 bg-primary forecast text-white ml-2 mb-3 p-2 mt-2">
-                            <p id="futdate1"></p>
-                            <p id="futimg1"></p>
-                            <p>Temp:<span id="futtemp1"></span></p>
-                            <p>Wind:<span id="futwind1"></span></p>
-                            <p>Humidity:<span id="futhumidity1"></span></p>
-                        </div>
-
-                        <div class="col-sm-2 bg-primary forecast text-white ml-2 mb-3 p-2 mt-2">
-                            <p id="futdate2"></p>
-                            <p id="futimg2"></p>
-                            <p>Temp:<span id="futtemp2"></span></p>
-                            <p>Wind:<span id="futwind2"></span></p>
-                            <p>Humidity:<span id="futhumidity2"></span></p>
-                        </div>
-
-                        <div class="col-sm-2 bg-primary forecast text-white ml-2 mb-3 p-2 mt-2">
-                            <p id="futdate3"></p>
-                            <p id="futimg3"></p>
-                            <p>Temp:<span id="futtemp3"></span></p>
-                            <p>Wind:<span id="futwind3"></span></p>
-                            <p>Humidity:<span id="futhumidity3"></span></p>
-                        </div>
-
-                        <div class="col-sm-2 bg-primary forecast text-white ml-2 mb-3 p-2 mt-2">
-                            <p id="futdate4"></p>
-                            <p id="futimg4"></p>
-                            <p>Temp:<span id="futtemp4"></span></p>
-                            <p>Wind:<span id="futwind4"></span></p>
-                            <p>Humidity:<span id="futhumidity4"></span></p>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
     <!--jQuery JS-->
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
-    <!--Code to Javascript File-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- JS -->
     <script src="./assets/js/script.js"></script>
 </body>
 </html>
