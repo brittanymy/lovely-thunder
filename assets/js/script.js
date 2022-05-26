@@ -1,5 +1,5 @@
 // HTML element reference
-let searchBtn = document.getElementById ("search-btn")
+const searchBtn = document.getElementById ("search-btn")
      searchHistoryBtn = document.getElementById ("search-history")
      cityInput = document.getElementById ("city-input"),
      cityName = document.getElementById ("city-name"),
@@ -9,7 +9,7 @@ let searchBtn = document.getElementById ("search-btn")
      windSpeed = document.getElementById ("wind"),
      humidity = document.getElementById ("humidity"),
      uvIndex = document.getElementById ("uv-index"),
-     forecastTitle = document.getElementById ("forecast-title"),
+     forecastWrapper = document.getElementById ("forecast-wrapper"),
      weeklyForecast = document.getElementById ("weekly-forecast")
        
 let cityList = [];
@@ -32,7 +32,7 @@ const formSubmission = function (event) {
 
 // Grab city name 
 const cityCoordinates = function (city) {
-    let coordURL = "https://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=a0c2e4175139a11ef4d0913ba3bef922";
+    let coordURL = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=a0c2e4175139a11ef4d0913ba3bef922`;
 
     fetch (coordURL)
     .then(function (response) {
@@ -54,7 +54,7 @@ const cityCoordinates = function (city) {
 
 // Grab weather
 const grabWeather = function (lon, lat) {
-    let cityURL = "https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&appid=a0c2e4175139a11ef4d0913ba3bef922&units=imperial";
+    let cityURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&appid=a0c2e4175139a11ef4d0913ba3bef922&units=imperial`;
 
     fetch(cityURL) 
     .then(function (response) {
@@ -73,12 +73,63 @@ const grabWeather = function (lon, lat) {
 
 // Display weather 
 const displayWeather = function (data) {
-    forecastTitle.textContent = "";
+    forecastWrapper.textContent = "";
 
     let currentDate = data.current.dt;
     let date = new Date(currentDate * 1000);
-    let month = date.getMonth();
-}
+    let month = date.getMonth ();
+    let year = date.getFullYear ();
+
+    let currentTime = parseInt(month) + 1 + "/" + day + "/" + year;
+
+    cityDate.textContent = currentTime;
+    weatherIcon.innerHTML = `<img src="http://openweathermap.org/img/wn/${data.current.weather[0].icon}@2x.png"/>`;
+    temperature.textContent = `Current temperature: ${data.current.temp}°F`;
+    windSpeed.textContent = `Current windspeed: ${data.current.wind_speed} mph`;
+    humidity.textContent = `Current humidity: ${data.current.humidity}%`;
+    uvIndex.textContent = `Current UV index: ${data.current.uvi}`;
+
+    if (data.current.uvi <= 4) {
+        uvIndex.setAttribute ("class", "uv-low");
+    } else if (data.current.uvi <= 7) {
+        uvIndex.setAttribute ("class", "uv-mid");
+    } else uvIndex.setAttribute ("class", "uv-high");
+
+    forecastWrapper.textContent = "5-Day Forecast";
+
+    for (let i = 1; 1 < 6; i++) {
+        let forecastDates = data.daily[i].dt;
+
+        let date = new Date(forecastDates * 1000);
+        let month = date.getMonth ();
+        let day = date.getDate ();
+        let year = date.getFullYear ();
+
+        let forecastTime = parseInt(month) + 1 + "/" + day + "/" + year;
+
+        let forecastDay = document.createElement ("div");
+        let forecastDate = document.createElement ("p");
+        let forecastIcon = document.createElement ("p");
+        let forecastTemperature = document.createElement ("p");
+        let forecastWindSpeed = document.createElement ("p");
+        let forecastHumidity = document.createElement ("p");
+
+        forecastDate.textContent = forecastTime;
+        forecastIcon.innerHTML = `<img src="http://openweathermap.org/img/wn/${data.daily[i].weather[0].icon}@2x.png"/>`;
+        forecastTemperature.textContent = `Temp: ${data.daily[i].temp.day}°F`;
+        forecastWindSpeed.textContent = `Windspeed: ${data.daily[i].wind_speed} mph`;
+        forecastHumidity.textContent = `Humidity: ${data.daily[i].humidity}%`;
+
+        forecastDay.setAttribute ("class", "forecast-days");
+
+        forecastDay.appendChild(forecastDate);
+        forecastDay.appendChild(forecastIcon);
+        forecastDay.appendChild(forecastTemperature);
+        forecastDay.appendChild(forecastWindSpeed);
+        forecastDay.appendChild(forecastHumidity);
+        forecastWrapper.appendChild(forecastDay);
+    }
+};
 
 // API Key Setup
 let APIKey = '3ac984d2710f17ecb1cf22a56a4cc25b';
