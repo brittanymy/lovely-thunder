@@ -1,79 +1,87 @@
-// HTML Element References
-// let searchCity = document.getElementById ('search-city'),
-//      searchBtn = document.getElementById ('search-btn'),
-//      currentCity = document.getElementById ('current-city'),
-//      currentTemperature = document.getElementById ('current-temp'),
-//      currentWind = document.getElementById ('current-wind'),
-//      currentHumidity = document.getElementById ('current-humidity'),
-//      currentUVIndex =  document.getElementById ('uv-index')
-     
-let city = '';
-let citySearch = [];
+// HTML element reference
+let searchBtn = document.getElementById ("search-btn")
+     searchHistoryBtn = document.getElementById ("search-history")
+     cityInput = document.getElementById ("city-input"),
+     cityName = document.getElementById ("city-name"),
+     cityDate = document.getElementById ("date"),
+     weatherIcon = document.getElementById ("icon"),
+     temperature = document.getElementById ("temperature"),
+     windSpeed = document.getElementById ("wind"),
+     humidity = document.getElementById ("humidity"),
+     uvIndex = document.getElementById ("uv-index"),
+     forecastTitle = document.getElementById ("forecast-title"),
+     weeklyForecast = document.getElementById ("weekly-forecast")
+       
+let cityList = [];
 
-// Searches Cities 
-function find (c) {
-    for (let i = 0; citySearch.length; i++) {
-        if (c.toUpperCase() === citySearch[i]) {
-            return -1;
+// Form submission
+const formSubmission = function (event) {
+    event.preventDefault();
+
+    let city = cityInput.value.trim();
+
+    if (city) {
+        getCoordinates (city);
+        cityInput.value = "";
+    } else {
+        alert ("Enter a city name!")
+    } 
+    keepSearchedCity (city);
+    cityLoadIn(); 
+};
+
+// Grab city name 
+const cityCoordinates = function (city) {
+    let coordURL = "https://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=a0c2e4175139a11ef4d0913ba3bef922";
+
+    fetch (coordURL)
+    .then(function (response) {
+        if (response.ok) {
+            response.JSON().then(function (data) {
+                lon = data[0].lon;
+                lat = data[0].lat;
+                cityName.textContent = data[0].name;
+                grabWeather(lon, lat);
+            });
+        } else {
+            alert("City not found.")
         }
+    })
+    .catch(function (error) {
+        alert("Cannot connect to server.")
+    });
+};
+
+// Grab weather
+const grabWeather = function (lon, lat) {
+    let cityURL = "https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&appid=a0c2e4175139a11ef4d0913ba3bef922&units=imperial";
+
+    fetch(cityURL) 
+    .then(function (response) {
+        if (response.ok) {
+        response.JSON().then(function (data) {
+            displayWeather(data);
+        });
+    } else {
+        alert("City not found.");
     }
-    return -1;
+    })
+    .catch(function (error) {
+        alert("Cannot connect to server.");
+    });
+};  
+
+// Display weather 
+const displayWeather = function (data) {
+    forecastTitle.textContent = "";
+
+    let currentDate = data.current.dt;
+    let date = new Date(currentDate * 1000);
+    let month = date.getMonth();
 }
 
 // API Key Setup
 let APIKey = '3ac984d2710f17ecb1cf22a56a4cc25b';
-// Display current & future weather
-// function weatherDisplay (event) {
-//     event.preventDefault ();
-    
-//     if (searchCity.val().trim()!=='') {
-//         city = searchCity.val().trim();
-//         currentWeather(city);
-//     }
-// }
-//https://api.openweathermap.org/data/2.5/weather?q=London&appid={API key}
-// AJAX Call
-function currentWeather (city) {
-    // Query url
-    let queryURL = 'https://api.openweathermap.org/data/2.5/weather?q=' + city + '&APPID=' + APIKey;
-    $.ajax ({
-        url: queryURL,
-        method: 'GET'
-    }).then(function (response) {
-        console.log (response);
-        oneCall (response.coord.lon, response.coord.lat);
-        // let weatherIcon = response.weather[0].icon;
-        // let iconURL = 'https://openweathermap.org/img/wn/' + weatherIcon + '@2x.png';
-
-        // let date = new Date (response.dt*1000).toLocaleDateString ();
-        // $(currentCity).html(response.name + '('+date+')' + '<img src='+iconURL+'>');
-
-        // let tempFuture = (response.main.temp - 273.15) * 1.80 + 32;
-        // $(currentTemperature).html((tempFuture).toFixed(2) + '&#8457');
-        // $(currentHumidity).html(response.main.humidity + '%');
-        // let windSpeed = response.wind.speed;
-        // let windMPH = (windSpeed * 2.237).toFixed(1);
-        // $(currentWind).html(windMPH + "MPH")
-
-      
-        // forecast(response.id);
-        // if (response.cod == 200) {
-        //     citySearch = JSON.parse(localStorage.getItem('cityName'));
-        //     if (citySearch == null) {
-        //         citySearch == [];
-        //         citySearch.push (city.toUpperCase ());
-        //         localStorage.setItem ('cityName', JSON.stringify(citySearch));
-        //         addToList (city);
-        //     } else {
-        //         if (find (city) > 0) {
-        //             citySearch.push(city.toUpperCase());
-        //             localStorage.setItem ('cityName', JSON.stringify(citySearch));
-        //             addToList (city);
-        //         }
-        //     }
-        // }
-    });
-}
 
 // Returns UVIndex 
 function oneCall (ln, lt) {
