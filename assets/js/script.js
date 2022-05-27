@@ -1,6 +1,7 @@
 // HTML element reference
-const searchBtn = document.getElementById ("search-btn")
-     searchHistoryBtn = document.getElementById ("search-history")
+const searchBtn = document.getElementById ("search-btn"),
+     searchHistoryBtn = document.getElementById (".btn-secondary"),
+     searchHistoryWrapper = document.getElementById ("search-history")
      cityInput = document.getElementById ("city-input"),
      cityName = document.getElementById ("city-name"),
      cityDate = document.getElementById ("date"),
@@ -21,17 +22,17 @@ const formSubmission = function (event) {
     let city = cityInput.value.trim();
 
     if (city) {
-        getCoordinates (city);
+        getCoordinates(city);
         cityInput.value = "";
     } else {
         alert ("Enter a city name!")
     } 
-    keepSearchedCity (city);
+    cityStorage(city);
     cityLoadIn(); 
 };
 
 // Grab city name 
-const cityCoordinates = function (city) {
+const getCoordinates = function (city) {
     let coordURL = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=a0c2e4175139a11ef4d0913ba3bef922`;
 
     fetch (coordURL)
@@ -131,86 +132,41 @@ const displayWeather = function (data) {
     }
 };
 
-// API Key Setup
-let APIKey = '3ac984d2710f17ecb1cf22a56a4cc25b';
+// Save cities in local storage 
+const cityStorage = function (city) {
+    cityList = JSON.parse(localStorage.getItem("search-history")) || [];
+    cityList.push(city);
+    localStorage.setItem("search-history", JSON.stringify(cityList));
+};
 
-// Returns UVIndex 
-function oneCall (ln, lt) {
-    let uvURL = `https://api.openweathermap.org/data/3.0/onecall?lat=${lt}&lon=${ln}&exclude=hourly&appid=${APIKey}&units=imperial`
-    console.log(uvURL)
-    $.ajax ({
-        url: queryURL, 
-        method: 'GET'
-    }).then(function (response) {
-       console.log (response);
-    });
-}
+const cityLoadIn = function () {
+    let savedCity = JSON.parse(localStorage.getItem("search-history"));
 
-// Display 5 Day Forecast 
-function forecast (cityId) {
-    let dayOver = false;
-    let queryForecastURL = 'https://api.openweathermap.org/data/2.5/forecast?id=' + cityId + '&appid=' + APIKey;
-    
-    $.ajax ({
-        url: queryForecastURL,
-        method: 'GET'
-    }).then (function (response) {
+    searchHistoryWrapper.textContent = "";
 
-        for (i = 0; i < 5; i++) {
-            let date = new Date ((response.list[((i+1)*8)-1].dt)*1000).toLocaleDateString(); 
-            let iconCode = response.list[((i+1)*8)-1].weather[0].icon;
-            let iconURL = 'https://openweathermap.org/img/wn/' + iconCode + '.png';
-            let tempK = response.list[((i+1)*8)-1].main.temp;
-            let tempFuture = (((tempK-273.5)*1.80)+32).toFixed(2);
-            // let windFuture = (());
-            let humidity = response.list[((i+1)*8)-1].main.humidity;
-
-            $('futDate' + i).html(date);
-            $('futImg' + i).html('<img src='+iconURL+'>');
-            $('futTemp' + i).html(tempFuture + '&#8457');
-            // $('futWind' + i).html()
-            $('futHumidity' + i).html(humidity + '%');
-        }
-    })
-}
-
-// Add passed city to search history
-function addToList (c) {
-    let listEl = $('<li>' + c.toUpperCase() + '</li>');
-    $(listEl).attr('class', 'list-group-item');
-    $(listEl).attr('data-value', c.toUpperCase());
-    $('.list-group').append(listEl);
-}
-
-// Display past search
-function pastSearch (event) {
-    let liEl = event.target;
-    if (event.target.matches('li')) {
-        city = liEl.textContent.trim ();
-        currentWeather (city);
+    for (let i = 1; 1 < savedCity.length; i++) {
+        let searchHistoryBtn = document.createElement ("button");
+        searchHistoryBtn.textContent = savedCity[i];
+        searchHistoryBtn.setAttribute ("search-data", savedCity[i]);
+        searchHistoryBtn.setAttribute (
+            "class",
+            "btn btn-secondary btn-block p-2"
+        );
+        searchHistoryBtn.setAttribute("type", "submit");
+        searchHistoryBtn.setAttribute("id", "search-history-button");
+        searchHistoryWrapper.appendChild(searchHistoryBtn);
     }
-} 
+};
 
-// Render Function
-function loadCity () {
-    $('ul').empty();
-    let citySearch = JSON.parse (localStorage.getItem('cityName'));
-    if (!citySearch == null) {
-        citySearch = JSON.parse(localStorage.getItem('cityName'));
-        for (i = 0; i < citySearch.length; i++) {
-            addToList (citySearch[i]);
-        }
-        city = citySearch [i-i];
-        currentWeather (city);
-    }
-}
+$(document).ready(cityLoadIn);
 
 // Final Event Listeners
-$("#search-btn").on('click', function(event){
-    event.preventDefault()
-    let city = $("#search-city").val()
-    currentWeather(city);
+searchBtn.addEventListener("click", formSubmission);
 
-});
-$(document).on('click', pastSearch);
-$(window).on('load', loadCity);
+document 
+    .querySelector("#search-history")
+    .addEventListener("click", function (event) {
+        event.preventDefault();
+        let city = event.target.dataset.search;
+        getCoordinates(city);
+    });
